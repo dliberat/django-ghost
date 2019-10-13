@@ -12,7 +12,14 @@ The first player to create a full English word that is 4 characters or longer, o
 
 ### Getting started
 
+The server can be started with the following Docker command:
+
+```
+$ docker-compose up
+```
+
 New dictionaries can easily be imported if they are in JSON format. Simply modify the `/game/assets/build_wordlist.py` file to point to your new dictionary, and modify `/game/asset_loader.py` to match whatever you choose to name your output files. This can be done, for example, to quickly and easily port the game to a different language (Note: This implementation has been developed with ASCII characters in mind and likely will not work properly outside of the simple a-z ASCII characters).
+
 
 ### References
 
