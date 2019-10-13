@@ -1,5 +1,6 @@
 FROM python:3
 ENV PYTHONUNBUFFERED 1
+RUN mkdir -p /var/log/django/ghost
 RUN mkdir /code
 WORKDIR /code
 COPY requirements.txt /code/
