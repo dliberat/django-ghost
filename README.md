@@ -10,6 +10,10 @@ Select a letter. The computer will then select a letter and add it to the right 
 
 The first player to create a full English word that is 4 characters or longer, or the first player to create a sequence of letters that *cannot* be continued into a proper English word loses.
 
+### Demo
+
+Available at: [http://www.danliberatori.com/projects/ghost](http://www.danliberatori.com/projects/ghost)
+
 ### Getting started
 
 __Booting the server (Docker):__
@@ -55,6 +59,13 @@ You can then use the sample front-end website to see the game in action. Open `/
 __Changing dictionaries:__
 
 New dictionaries can easily be imported if they are in JSON format. Simply modify the `/game/assets/build_wordlist.py` file to point to your new dictionary, and modify `/game/asset_loader.py` to match whatever you choose to name your output files. This can be done, for example, to quickly and easily port the game to a different language (Note: This implementation has been developed with ASCII characters in mind and likely will not work properly outside of the simple a-z ASCII characters).
+
+
+### Winning plays
+
+I have not taken the time to solve the game using the current dictionary. Here is a non-exhaustive list of potential winning sequences.
+
+- J: "jairou", "juke"
 
 
 ### References
