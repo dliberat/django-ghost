@@ -44,3 +44,23 @@ def index(request):
             res['definition'] = EN_DEFINITIONS[target_word]
 
     return JsonResponse(res)
+
+
+def get_leaf_node(request):
+    
+    current_word = request.GET.get('word', None)
+
+    if not validate_word(current_word):
+        logger.info(f"Rejected invalid word: {current_word}")
+        return HttpResponseBadRequest("Word must be a string of letters.")
+    
+    current_word = current_word.lower()
+    logger.debug(f"Parsed word from request: {current_word}")
+    leaf = game.get_leaf_node(current_word)
+    res = dict()
+    res['word'] = leaf
+
+    if leaf in EN_DEFINITIONS:
+        res['definition'] = EN_DEFINITIONS[leaf]
+    
+    return JsonResponse(res)

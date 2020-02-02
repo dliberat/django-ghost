@@ -29,14 +29,14 @@ class TestGhostGame(TestCase):
         assert zzz.word is None
 
 
-    def test_make_move_is_game_over_is_word(self):
+    def test_make_move_is_game_over_is_none(self):
         wordlist = Trie()
         wordlist.insert_all(["foo", "bar"])
         game = GhostGame(wordlist)
         foo = game.make_move("foo")
 
         assert foo.is_game_over == True
-        assert foo.word == "foo"
+        assert foo.word == None
 
 
     def test_make_move_use_strat(self):
@@ -137,6 +137,23 @@ class TestGhostGame(TestCase):
         assert "o" in winners
         assert len(losers) == 3
         assert len(winners) == 2
+
+
+    def test_get_leaf_node(self):
+        wordlist = Trie()
+        wordlist.insert_all(['done', 'douse', 'doberman'])
+        game = GhostGame(wordlist)
+        leaf = game.get_leaf_node('dob')
+        assert leaf == 'doberman'
+
+
+    def test_get_leaf_node_random(self):
+        wordlist = Trie()
+        wordlist.insert_all(['done', 'douse', 'doberman'])
+        game = GhostGame(wordlist)
+        leaf = game.get_leaf_node('do')
+        assert leaf in ['done', 'douse', 'doberman']
+
 
 
 class TestGhostStratRandomWinBestEffortLoss(TestCase):

@@ -12,7 +12,7 @@ The first player to create a full English word that is 4 characters or longer, o
 
 ### Demo
 
-Available at: [http://www.danliberatori.com/projects/ghost](http://www.danliberatori.com/projects/ghost)
+Available at: [https://www.danliberatori.com/projects/ghost](https://www.danliberatori.com/projects/ghost)
 
 ### Getting started
 
@@ -52,8 +52,9 @@ $ pip install -r requirements.txt
 $ python manage.py runserver 0.0.0.0:8000
 ```
 
+__Playing the game:__
 
-You can then use the sample front-end website to see the game in action. Open `/ui/index.html` in your browser to play.
+Once the server has been booted up, you can use the sample front-end website to see the game in action. Open `http://localhost:8000/ui` in your browser to play.
 
 
 __Changing dictionaries:__

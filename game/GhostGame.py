@@ -1,3 +1,5 @@
+import random
+
 from .Trie import TRIE_BRANCH
 from .GhostStrategies import RandomWinBestEffortLossStrat
 
@@ -90,4 +92,38 @@ class GhostGame(object):
             # strategy chose a non-real word
             return GhostMove(True, word, False)
 
-            
+
+    def get_leaf_node(self, current_word):
+        """Provided a current word that lies somewhere on the trie,
+        traverses down a branch until it hits a leaf and returns the 
+        collected path as a single word.
+
+        Effectively, this can be used as a "hint" mechanism. Given that
+        the game is in the state "current_word", the random choice 
+        of leaf node provides at least one possibility for extending gameplay.
+
+        Args:
+            current_word (string) - Current state of the game
+        Returns:
+            None - if current_word is not a valid word in the Trie
+            current_word - if current_word is already a leaf in the Trie
+            Otherwise, returns a string that constitutes a word whose prefix
+            is current_word.
+        """
+        node = self.wordlist.find(current_word)
+
+        if node is None:
+            # current word is not in the Trie
+            return None
+        elif node.value != TRIE_BRANCH:
+            # current word is already a leaf
+            return current_word
+        
+        # descend down a random branch down the trie
+        # until we hit a leaf
+        while node.children:
+            next_letter = random.choice(list(node.children.keys()))
+            current_word += next_letter
+            node = node.children.get(next_letter)
+        
+        return current_word
