@@ -18,8 +18,8 @@ EN_DEFINITIONS = None
 # Load files
 ###########################################################
 
-EN_WEBSTERS_WORDS_PATH = "assets/en_websters_unabridged.txt"
-EN_WEBSTERS_DICT_PATH = "assets/en_websters_unabridged.json"
+EN_WEBSTERS_WORDS_PATH = "static/game/wordlist.txt"
+EN_WEBSTERS_DICT_PATH = "static/game/definitions.json"
 
 en_word_list = []
 

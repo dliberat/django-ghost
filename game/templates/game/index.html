@@ -1,0 +1,111 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Ghost</title>
+  <meta name="description" content="Play Ghost against a computer">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://unpkg.com/nes.css@2.2.1/css/nes.min.css" rel="stylesheet" />
+  <link href="{% static 'game/css/style.css' %}" rel="stylesheet" />
+</head>
+
+<body>
+  <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+  
+  <header>
+    <div class="nes-container is-centered">
+        <h3 class="title">GHOST</h3>
+    </div>
+  </header>
+  <main>
+      <div class="nes-container with-title">
+        <h3 class="title">Play The Game</h3>
+
+        <form action="{% url 'game:index' %}" method="post">
+            <input type="text" name="prefix" style="display: none;" value="{{ prefix }}" />
+
+            <div id="game-container">
+                <div id="prefix-letters">
+                    {% if prefix %}
+                        {{ prefix }}
+                    {% elif is_game_over and not prefix %}
+                        <!-- When the player loses, the cpu player doesn't send a new prefix -->
+                        {{ previous_word }}
+                    {% endif %}
+                </div>
+                {% if not is_game_over %}<input type="text" name="input-txt" class="nes-input" id="input-txt" maxlength="1" />{% endif %}
+            </div>
+            <div id="game-controls">
+                <input type="submit" id="btn-submit" class="nes-btn is-primary" value="submit" name='submit'>
+                <input type="submit" id="btn-reset" class="nes-btn" value="reset" name='reset'>
+            </div>
+
+        </form>
+
+        <div id="game-status">
+            {% if player_won %}
+                <span class="nes-text is-primary">You win!</span>
+            {% elif player_lost %}
+                <span class="nes-text is-error">You lose!</span>
+            {% elif prefix %}
+                Game on! Type in another letter to continue.
+            {% else %}
+                Enter a letter into the box and click <span class="nes-text is-primary">Submit</span> to start playing.
+            {% endif %}
+        </div>
+        <div id="game-definition">
+            {% if definition %}{{ definition }}{% endif %}
+        </div>
+        <div id="hint">
+            {% if hint %}
+                Hint: You could have  tried for <span class="nes-text is-success">{{ hint }}</span>!
+            {% endif %}
+        </div>
+      </div>
+
+
+      <div class="nes-container with-title vert-spaced">
+        <h3 class="title">How To Play</h3>
+        <p>
+            <span class="nes-text is-primary">Ghost</span> is a simple word game that can be played by two players. Players take turns adding a letter to the end of a word until:
+        </p>
+        <p>
+            <span class="nes-text is-warning">a)</span> one player completes a full word (of 4 or more characters) that exists in the dictionary, or
+        </p>
+        <p>
+                <span class="nes-text is-warning">b)</span> one player adds a letter that renders an impossible sequence of characters (i.e., no matter how many more letters get added, it will never result in a proper dictionary word being created.)
+        </p>
+        <p>
+            The player that causes the word to reach either end state is the losing player.
+        </p>
+        <p>
+            Having a tough time? Gain an edge by peeking at the <a href="{%  static 'game/wordlist.txt' %}" target="new">word list</a> this game is based off of!
+        </p>
+    </div>
+  </main>
+  <footer>
+      <div class="nes-container with-title">
+          <h3 class="title">About</h3>
+          <p>
+              This website was created by Dan Liberatori with:
+              <ul>
+                <li><a href="https://www.djangoproject.com">Django</a></li>
+                <li><a href="https://www.docker.com">Docker</a></li>
+                <li><a href="https://github.com/matthewreagan/WebstersEnglishDictionary">Webster's Unabridged English Dictionary</a></li>
+                <li><a href="https://nostalgic-css.github.io/NES.css/">NES.css</a></li>
+              </ul>
+              
+              The source code for the back-end API can be found on my <a href="https://github.com/dliberat/django-ghost">GitHub</a> page.
+          </p>
+      </div>
+  </footer>
+
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+</body>
+</html>

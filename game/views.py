@@ -1,13 +1,11 @@
 from django.http import JsonResponse, HttpResponseBadRequest
+from django.shortcuts import render
+
 import re
-import logging
 
 from .asset_loader import EN_TRIE, EN_DEFINITIONS
 from .GhostGame import GhostGame
 
-logger = logging.getLogger("ghostAppLogger")
-
-logger.info("Starting up game instance")
 game = GhostGame(EN_TRIE)
 
 
@@ -16,51 +14,41 @@ def validate_word(word):
 
 
 def index(request):
+    ctx = {}
 
-    logger.debug("Received request.")
+    if request.method == 'POST':
+        
+        if request.POST.get('reset', None) is not None:
+            ctx['prefix'] = ''
+        else:
+            usr_input = request.POST.get('input-txt', '')
+            prefix = request.POST.get('prefix', '') + usr_input
+            prefix = prefix.lower()
 
-    current_word = request.GET.get('word', None)
+            if not validate_word(prefix):
+                logger.info(f"Rejected invalid word: {prefix}")
+                return HttpResponseBadRequest("Word must be a string of letters.")
 
-    if not validate_word(current_word):
-        logger.info(f"Rejected invalid word: {current_word}")
-        return HttpResponseBadRequest("Word must be a string of letters.")
-    
-    current_word = current_word.lower()
-    logger.debug(f"Parsed word from request: {current_word}")
+            cpu_move = game.make_move(prefix)
+            ctx['is_game_over'] = cpu_move.is_game_over
+            ctx['previous_word'] = prefix
+            ctx['prefix'] = cpu_move.word
+            ctx['is_real_word'] = cpu_move.is_real_word
 
-    cpu_move = game.make_move(current_word)
+            if cpu_move.is_game_over:
+                if not cpu_move.is_real_word and cpu_move.word is None:
+                    # player attempted a word that does not exist
+                    ctx['player_lost'] = True
+                    ctx['hint'] = game.get_leaf_node(prefix[0:-1])
+                elif cpu_move.is_real_word and cpu_move.word is None:
+                    # player played a real word
+                    ctx['player_lost'] = True
+                elif cpu_move.is_real_word and cpu_move.word is not None:
+                    # computer played a real word
+                    ctx['player_won'] = True
 
-    res = dict()
-    res['is_game_over'] = cpu_move.is_game_over
-    res['previous_word'] = current_word
-    res['cpu_word'] = cpu_move.word
-    res['is_real_word'] = cpu_move.is_real_word
-    res['definition'] = None
+                target_word = cpu_move.word if cpu_move.word is not None else prefix
+                target_word = target_word.lower()
+                ctx['definition'] = EN_DEFINITIONS.get(target_word, None)
 
-    if cpu_move.is_game_over:
-        target_word = cpu_move.word if cpu_move.word is not None else current_word
-        target_word = target_word.lower()
-        if target_word in EN_DEFINITIONS:
-            res['definition'] = EN_DEFINITIONS[target_word]
-
-    return JsonResponse(res)
-
-
-def get_leaf_node(request):
-    
-    current_word = request.GET.get('word', None)
-
-    if not validate_word(current_word):
-        logger.info(f"Rejected invalid word: {current_word}")
-        return HttpResponseBadRequest("Word must be a string of letters.")
-    
-    current_word = current_word.lower()
-    logger.debug(f"Parsed word from request: {current_word}")
-    leaf = game.get_leaf_node(current_word)
-    res = dict()
-    res['word'] = leaf
-
-    if leaf in EN_DEFINITIONS:
-        res['definition'] = EN_DEFINITIONS[leaf]
-    
-    return JsonResponse(res)
+    return render(request, 'game/index.html', ctx)

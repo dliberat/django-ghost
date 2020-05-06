@@ -1,0 +1,48 @@
+header {
+    margin: 1rem auto;
+    max-width: 800px;
+}
+main {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+footer {
+    margin: 1rem auto;
+    max-width: 800px;
+}
+#game-container {
+    margin: auto;
+    text-align: center;
+    font-size: 2em;
+}
+#game-controls {
+    margin: 1em auto;
+    text-align: center;
+}
+#game-status {
+    margin: 1.5em auto 0 auto;
+    text-align: center;
+    font-size: 0.8em
+}
+#game-definition {
+    margin: 1.5em auto 0 auto;
+    text-align: center;
+    font-size: 0.8em
+}
+#hint {
+    margin: 1.5em auto 0 auto;
+    text-align: center;
+    font-size: 0.7em
+}
+#input-txt {
+    display: inline-block;
+    width: 3em;
+    text-align: center;
+}
+#prefix-letters {
+    display: inline;
+}
+.vert-spaced {
+    margin-top: 1rem;
+}

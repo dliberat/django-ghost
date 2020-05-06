@@ -2,7 +2,7 @@
 
 ### About
 
-An API endpoint built with Django for playing the word game *Ghost*.
+An implementation of the word game *Ghost* as a Django app.
 
 ### How to play
 
@@ -54,22 +54,11 @@ $ python manage.py runserver 0.0.0.0:8000
 
 __Playing the game:__
 
-Once the server has been booted up, you can use the sample front-end website to see the game in action. Open `http://localhost:8000/ui` in your browser to play.
-
-
-__Changing dictionaries:__
-
-New dictionaries can easily be imported if they are in JSON format. Simply modify the `/game/assets/build_wordlist.py` file to point to your new dictionary, and modify `/game/asset_loader.py` to match whatever you choose to name your output files. This can be done, for example, to quickly and easily port the game to a different language (Note: This implementation has been developed with ASCII characters in mind and likely will not work properly outside of the simple a-z ASCII characters).
-
-
-### Winning plays
-
-I have not taken the time to solve the game using the current dictionary. Here is a non-exhaustive list of potential winning sequences.
-
-- J: "jairou", "juke"
+Once the server has been booted up, you can use the sample front-end website to see the game in action. Open `http://localhost:8000/` in your browser to play.
 
 
 ### References
 
 - [Ghost on Wikipedia](https://en.wikipedia.org/wiki/Ghost_(game))
-- [The dictionary used in this implementation](https://github.com/matthewreagan/WebstersEnglishDictionary)
+- [Word list reference](https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/PG/2006/04/1-10000)
+- [Word list definitions](https://github.com/matthewreagan/WebstersEnglishDictionary)

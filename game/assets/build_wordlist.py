@@ -25,31 +25,29 @@ from os import path
 import json
 import re
 
-# Dictionary file to create reduced files from
+# Word list
+WORD_LIST = "gutenberg_top_10000.txt"
+
+# Word definitions
 SRC_FILE = "en_websters_unabridged_full.json"
 
-# This file will be used to provide word definitions
-TGT_SHORT_DICT = "en_websters_unabridged.json"
+# Output file for endgame states
+TGT_FILE = "wordlist.txt"
 
-# This file will be loaded into a Trie, and is used to determine endgame states
-TGT_FILE = "en_websters_unabridged.txt"
-
+# Output file for definitions
+TGT_SHORT_DICT = "definitions.json"
 
 # minimum word length is 4
-pattern = re.compile("^[a-zA-Z]{4,}", re.ASCII)
+pattern = re.compile("^[a-zA-Z]{4,}$")
 
 def validate(word):
-    return re.fullmatch(pattern, word) is not None
-
+    return re.match(pattern, word) is not None
 
 with open(path.join(path.dirname(__file__), SRC_FILE)) as f:
     dictionary = json.load(f)
 
-# words only, no definitions
-# no special characters (only a-z ascii)
-# minimum length of 3
-# lowercase only
-wordlist = [key.lower() for key in dictionary if validate(key)]
+with open(path.join(path.dirname(__file__), WORD_LIST)) as f:
+    wordlist = [key.lower().strip() for key in f.readlines() if validate(key)]
 
 
 if not wordlist:
@@ -97,7 +95,9 @@ with open(path.join(path.dirname(__file__), TGT_FILE), 'w') as f:
 
 reduced_dict = dict()
 for word in reduced_wordlist:
-    reduced_dict[word] = dictionary[word]
+    definition = dictionary.get(word, None)
+    if definition is not None:
+        reduced_dict[word] = definition
 
 with open(path.join(path.dirname(__file__), TGT_SHORT_DICT), 'w') as f:
     json.dump(reduced_dict, f)
