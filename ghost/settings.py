@@ -68,13 +68,6 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/var/log/django/ghost/webapp.log',
-            'maxBytes': 20*1024*1024,
-            'backupCount': 2,
-        },
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
@@ -86,7 +79,7 @@ LOGGING = {
             'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
         },
         'django': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
         },
     },
